@@ -24,15 +24,20 @@ namespace JOIEnergy.Controllers
         }
 
         [HttpGet("compare-all/{smartMeterId}")]
+        // Kevin Broit: Use standarized C# nomenclature for methods
         public ObjectResult CalculatedCostForEachPricePlan(string smartMeterId)
         {
             string pricePlanId = _accountService.GetPricePlanIdForSmartMeterId(smartMeterId);
+            // Kevin Broit: the null check with the  return statement is forgotten.
+
             Dictionary<string, decimal> costPerPricePlan = _pricePlanService.GetConsumptionCostOfElectricityReadingsForEachPricePlan(smartMeterId);
             if (!costPerPricePlan.Any())
             {
+                //Kevin Broit: returned message is incorrect.
                 return new NotFoundObjectResult(string.Format("Smart Meter ID ({0}) not found", smartMeterId));
             }
 
+            //Kevin Broit: The return object is coupled to constants. Instead of that a DTO shall be created.
             return new ObjectResult(new Dictionary<string, object>() {
                 {PRICE_PLAN_ID_KEY, pricePlanId},
                 {PRICE_PLAN_COMPARISONS_KEY, costPerPricePlan},
@@ -40,15 +45,19 @@ namespace JOIEnergy.Controllers
         }
 
         [HttpGet("recommend/{smartMeterId}")]
+        // Kevin Broit: Use standarized C# nomenclature for methods
         public ObjectResult RecommendCheapestPricePlans(string smartMeterId, int? limit = null) {
+            // Kevin Broit: Parameter check for limit has been forgotten.
+
             var consumptionForPricePlans = _pricePlanService.GetConsumptionCostOfElectricityReadingsForEachPricePlan(smartMeterId);
 
             if (!consumptionForPricePlans.Any()) {
+                //Kevin Broit: returned message is incorrect.
                 return new NotFoundObjectResult(string.Format("Smart Meter ID ({0}) not found", smartMeterId));
             }
 
+            // Kevin Broit: The following code exceeds controller responsability. It shall be moved out to the service.
             var recommendations = consumptionForPricePlans.OrderBy(pricePlanComparison => pricePlanComparison.Value);
-
             if (limit.HasValue && limit.Value < recommendations.Count())
             {
                 return new ObjectResult(recommendations.Take(limit.Value));

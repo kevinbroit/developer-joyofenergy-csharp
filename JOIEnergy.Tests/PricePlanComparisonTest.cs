@@ -40,6 +40,7 @@ namespace JOIEnergy.Tests
         }
 
         [Fact]
+        // Kevin Broit: Three assertions = three tests? 
         public void ShouldCalculateCostForMeterReadingsForEveryPricePlan()
         {
             var electricityReading = new ElectricityReading() { Time = DateTime.Now.AddHours(-1), Reading = 15.0m };
@@ -115,6 +116,7 @@ namespace JOIEnergy.Tests
         }
 
         [Fact]
+        // Kevin Broit: Test could be better structured: Arrange-Act-Assert
         public void GivenNoMatchingMeterIdShouldReturnNotFound()
         {
             Assert.Equal(404, controller.CalculatedCostForEachPricePlan("not-found").StatusCode);

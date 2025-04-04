@@ -23,11 +23,13 @@ namespace JOIEnergy.Tests
         }
 
         [Fact]
+        // Kevin Broit: Assert not checking for null. Test spec do not match with implementation
         public void GivenMeterIdThatDoesNotExistShouldReturnNull() {
             Assert.Empty(meterReadingService.GetReadings("unknown-id"));
         }
 
         [Fact]
+        // Kevin Broit: the condition is missing: "When adding a new reading"
         public void GivenMeterReadingThatExistsShouldReturnMeterReadings()
         {
             meterReadingService.StoreReadings(SMART_METER_ID, new List<ElectricityReading>() {

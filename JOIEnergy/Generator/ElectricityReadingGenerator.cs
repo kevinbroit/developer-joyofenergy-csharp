@@ -6,6 +6,7 @@ namespace JOIEnergy.Generator
 {
     public class ElectricityReadingGenerator
     {
+        //Kevin Broit: Constructor not used.
         public ElectricityReadingGenerator()
         {
 

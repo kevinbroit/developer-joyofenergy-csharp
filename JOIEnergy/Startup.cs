@@ -54,8 +54,11 @@ namespace JOIEnergy
 
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddTransient<IAccountService, AccountService>();
+
+            //Kevin Broit: This class is not stateless. In every instance resolution, information would be lost of prior information.
             services.AddTransient<IMeterReadingService, MeterReadingService>();
             services.AddTransient<IPricePlanService, PricePlanService>();
+            // Kevin Broit: Repository pattern would improve testaility
             services.AddSingleton((IServiceProvider arg) => readings);
             services.AddSingleton((IServiceProvider arg) => pricePlans);
             services.AddSingleton((IServiceProvider arg) => SmartMeterToPricePlanAccounts);
@@ -69,9 +72,11 @@ namespace JOIEnergy
                 app.UseDeveloperExceptionPage();
             }
 
+            //Kevin Broit: Legacy code. This can be done using services.AddControllers()
             app.UseMvc();
         }
 
+        //Kevin Broit: The following code shall be pulled out of the startup. e.g: InitialDataSeed
         private Dictionary<string, List<ElectricityReading>> GenerateMeterElectricityReadings() {
             var readings = new Dictionary<string, List<ElectricityReading>>();
             var generator = new ElectricityReadingGenerator();
@@ -83,7 +88,8 @@ namespace JOIEnergy
             }
             return readings;
         }
-
+        
+        //Kevin Broit: It can be changed to private.
         public Dictionary<string, string> SmartMeterToPricePlanAccounts
         {
             get

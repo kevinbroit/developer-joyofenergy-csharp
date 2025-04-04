@@ -7,6 +7,7 @@ namespace JOIEnergy.Services
 {
     public class PricePlanService : IPricePlanService
     {
+        //Kevin Broit: dead code?
         public interface Debug { void Log(string s); };
 
         private readonly List<PricePlan> _pricePlans;
@@ -18,10 +19,14 @@ namespace JOIEnergy.Services
             _meterReadingService = meterReadingService;
         }
 
+        //Kevin Broit: C# naming conventions shall be applied to all methods. e.g.: CalculateAverageReading 
         private decimal calculateAverageReading(List<ElectricityReading> electricityReadings)
         {
-            var newSummedReadings = electricityReadings.Select(readings => readings.Reading).Aggregate((reading, accumulator) => reading + accumulator);
+            var newSummedReadings = electricityReadings
+                .Select(readings => readings.Reading)
+                .Aggregate((reading, accumulator) => reading + accumulator);
 
+        
             return newSummedReadings / electricityReadings.Count();
         }
 
@@ -34,6 +39,8 @@ namespace JOIEnergy.Services
         }
         private decimal calculateCost(List<ElectricityReading> electricityReadings, PricePlan pricePlan)
         {
+            //Kevin Broit: Why is there an average calculation? 
+            // I would normally expect to multiply the consumptions and the unit rate of the plan for that reading. 
             var average = calculateAverageReading(electricityReadings);
             var timeElapsed = calculateTimeElapsed(electricityReadings);
             var averagedCost = average/timeElapsed;

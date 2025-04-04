@@ -7,6 +7,7 @@ using System.Collections.Generic;
 
 namespace JOIEnergy.Tests
 {
+    //Kevin Broit: dead code?
     public class PricePlanServiceTest
     {
         private PricePlanService _pricePlanService;
